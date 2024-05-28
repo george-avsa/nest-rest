@@ -21,6 +21,11 @@ export class TaskController {
     return this.taskService.getAll();
   }
 
+  @Get(':id')
+  async getById(@Param('id') id: string) {
+    return this.taskService.getById(id);
+  }
+
   @Post()
   @UsePipes(new ValidationPipe())
   async create(@Body() dto: CreateTaskDto) {

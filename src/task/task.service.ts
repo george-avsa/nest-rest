@@ -10,13 +10,7 @@ export class TaskService {
     return this.prisma.task.findMany();
   }
 
-  create(dto: CreateTaskDto) {
-    return this.prisma.task.create({
-      data: dto,
-    });
-  }
-
-  async toggleCompleted(id: string) {
+  async getById(id: string) {
     const toggledTask = await this.prisma.task.findUnique({
       where: {
         id: +id,
@@ -24,6 +18,18 @@ export class TaskService {
     });
 
     if (!toggledTask) throw new NotFoundException('Task not found');
+
+    return toggledTask;
+  }
+
+  create(dto: CreateTaskDto) {
+    return this.prisma.task.create({
+      data: dto,
+    });
+  }
+
+  async toggleCompleted(id: string) {
+    const toggledTask = await this.getById(id);
 
     return this.prisma.task.update({
       where: {
